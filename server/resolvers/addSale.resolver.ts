@@ -17,9 +17,8 @@ export const root = {
     date: string;
     total: number;
   }) => {
-    console.log(productId, customerId, quantity, total);
     try {
-      await db.transaction(async (tx) => {
+      return await db.transaction(async (tx) => {
         const [fetchCustomer] = await tx
           .select()
           .from(customers)
@@ -43,6 +42,7 @@ export const root = {
           id: uuidv4(),
           productId: fetchProduct.id,
           customerId: fetchCustomer.id,
+          date: date,
           total: total.toString(),
           quantity: quantity,
         };
@@ -54,17 +54,11 @@ export const root = {
 
         return {
           id: newSale.id,
-          product: {
-            id: fetchProduct.id,
-            name: fetchProduct.name,
-          },
-          customer: {
-            id: fetchCustomer.id,
-            name: fetchCustomer.name,
-          },
-          date: date,
-          quantity: quantity,
-          total: total,
+          product: fetchProduct,
+          customer: fetchCustomer,
+          date: newSale.date,
+          quantity: newSale.quantity,
+          total: newSale.total,
         };
       });
     } catch (e) {
