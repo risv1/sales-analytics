@@ -1,6 +1,6 @@
 import { db } from "../database/db";
 import { customers, products, sales } from "../database/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 
 export const root = {

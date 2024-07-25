@@ -1,6 +1,8 @@
 .env
 *.db
 
+drizzle/
+
 # Logs
 logs
 *.log

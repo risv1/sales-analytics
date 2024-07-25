@@ -1,11 +1,9 @@
 import { and, eq, gte, lte } from "drizzle-orm";
 import { db } from "../database/db";
 import { customers, products, sales } from "../database/schema";
-import { Sale } from "../models/sale.model";
 
 export const root = {
   getSalesDataByDateRange: async (
-    _: any,
     { startDate, endDate }: { startDate: string; endDate: string }
   ) => {
     const start = new Date(startDate);

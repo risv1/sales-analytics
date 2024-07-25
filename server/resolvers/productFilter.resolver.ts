@@ -2,7 +2,7 @@ import { db } from "../database/db";
 import { customers, products, sales } from "../database/schema";
 import { eq, lt } from "drizzle-orm";
 
-export const root = {
+export const categoryRoot = {
   getSalesByProductCategory: async({ category }: { category: string }) => {
     try{
       const fetchSalesByCategory = await db.select({
@@ -45,6 +45,9 @@ export const root = {
       throw new Error("Error fetching sales data")
     }
   },
+};
+
+export const stockRoot = {
   getSalesDataByProductStock: async(
     { threshold }: { threshold: number }
   ) => {
@@ -89,4 +92,4 @@ export const root = {
       throw new Error("Error fetching sales data")
     }
   },
-};
+}

@@ -1,4 +1,3 @@
-import { Sale } from "../models/sale.model";
 import { db } from "../database/db";
 import { customers, products, sales } from "../database/schema";
 import { eq } from "drizzle-orm";

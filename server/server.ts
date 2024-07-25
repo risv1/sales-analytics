@@ -9,11 +9,15 @@ import {
   categoryFilterSchema,
   stockFilterSchema,
 } from "./schemas/productFilter.schema";
+import {
+  addCustomerSchema, addProductSchema
+} from "./schemas/addProductCustomer.schema"
 import { root as getSalesRoot } from "./resolvers/getSales.resolver";
 import { root as addSaleRoot } from "./resolvers/addSale.resolver";
 import { root as customerFilterRoot } from "./resolvers/customerFilter.resolver";
 import { root as dateFilterRoot } from "./resolvers/dateFilter.resolver";
-import { root as productFilterRoot } from "./resolvers/productFilter.resolver";
+import { categoryRoot, stockRoot } from "./resolvers/productFilter.resolver";
+import { customerRoot, productRoot } from "./resolvers/addProductCustomer.resolver";
 
 const app = express();
 
@@ -55,7 +59,23 @@ app.use(
     "/category-filter",
     createHandler({
       schema: categoryFilterSchema,
-      rootValue: productFilterRoot,
+      rootValue: stockRoot,
+    })
+)
+
+app.use(
+    "/add-customer",
+    createHandler({
+      schema: addCustomerSchema,
+      rootValue: customerRoot,
+    })
+)
+
+app.use(
+    "/add-product",
+    createHandler({
+      schema: addProductSchema,
+      rootValue: productRoot,
     })
 )
 
@@ -63,7 +83,7 @@ app.use(
     "/stock-filter",
     createHandler({
       schema: stockFilterSchema,
-      rootValue: productFilterRoot,
+      rootValue: stockRoot,
     })
 )
 
