@@ -1,4 +1,7 @@
-import { Sale } from "../models/sale.model";
+import { db } from "../database/db";
+import { customers, products, sales } from "../database/schema";
+import { eq, inArray } from "drizzle-orm";
+import { v4 as uuidv4 } from "uuid";
 
 export const root = {
   addSale: async ({
@@ -13,21 +16,60 @@ export const root = {
     quantity: number;
     date: string;
     total: number;
-  }): Promise<Sale> => {
-    console.log(productId, customerId, quantity, date, total);
-    return {
-      id: "1",
-      product: {
-        id: "1",
-        name: "Product 1",
-      },
-      customer: {
-        id: "1",
-        name: "Customer 1",
-      },
-      date: "2021-01-01",
-      quantity: 1,
-      total: 100,
-    };
+  }) => {
+    console.log(productId, customerId, quantity, total);
+    try {
+      await db.transaction(async (tx) => {
+        const [fetchCustomer] = await tx
+          .select()
+          .from(customers)
+          .where(eq(customers.id, customerId));
+        if (fetchCustomer === null || fetchCustomer === undefined) {
+          throw new Error("Customer not found");
+        }
+
+        const [fetchProduct] = await tx
+          .select()
+          .from(products)
+          .where(eq(products.id, productId));
+
+        if (fetchProduct === null || fetchProduct === undefined) {
+          throw new Error("Product not found");
+        }
+
+        const total = Number(fetchProduct.price) * quantity;
+
+        const newSale = {
+          id: uuidv4(),
+          productId: fetchProduct.id,
+          customerId: fetchCustomer.id,
+          total: total.toString(),
+          quantity: quantity,
+        };
+
+        const insertSale = await tx.insert(sales).values(newSale);
+        if (insertSale === null) {
+          throw new Error("Failed to insert sale");
+        }
+
+        return {
+          id: newSale.id,
+          product: {
+            id: fetchProduct.id,
+            name: fetchProduct.name,
+          },
+          customer: {
+            id: fetchCustomer.id,
+            name: fetchCustomer.name,
+          },
+          date: date,
+          quantity: quantity,
+          total: total,
+        };
+      });
+    } catch (e) {
+      console.error(e);
+      throw new Error("Failed to add sale");
+    }
   },
 };

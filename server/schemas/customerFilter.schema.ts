@@ -3,7 +3,7 @@ import { buildSchema } from "graphql";
 export const schema = buildSchema(
     `
       type Query {
-          getSalesDataByTopCustomers(limit: Int!): [Sale]
+          getSalesDataByTopCustomers(threshold: Float!): [Sale]
       }
   
       type Sale {

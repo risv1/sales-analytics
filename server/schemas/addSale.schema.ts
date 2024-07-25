@@ -1,7 +1,11 @@
 import { buildSchema } from "graphql";
 
 export const schema = buildSchema(
-    `
+  `
+      type Query {
+        _empty: String
+      } 
+    
       type Mutation {
           addSale(productId: ID!, customerId: ID!, quantity: Int!, date: String!, total: Float!): Sale
       }
@@ -25,4 +29,4 @@ export const schema = buildSchema(
           name: String!
       }
     `
-  );
+);

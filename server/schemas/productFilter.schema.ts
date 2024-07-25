@@ -3,11 +3,7 @@ import { buildSchema } from 'graphql';
 export const categoryFilterSchema = buildSchema(
   `
   type Query {
-    sales(filter: CategoryFilterInput): [Sale]
-  }
-
-  input CategoryFilterInput {
-    category: String!
+    getSalesByProductCategory(category: String!): [Sale]
   }
 
   type Sale {
@@ -34,7 +30,7 @@ export const categoryFilterSchema = buildSchema(
 export const stockFilterSchema = buildSchema(
   `
   type Query {
-    getSalesDataByProductStock(threshold: Int!): [Sale]
+    getSalesByProductStock(threshold: Int!): [Sale]
   }
 
   type Sale {
