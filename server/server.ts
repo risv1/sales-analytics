@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors"
 import { createHandler } from "graphql-http/lib/use/express";
 import { schema as getSalesSchema } from "./schemas/getSales.schema";
 import { schema as addSaleSchema } from "./schemas/addSale.schema";
@@ -25,6 +26,8 @@ import {
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use(cors())
 
 app.use(
   "/get-sales",

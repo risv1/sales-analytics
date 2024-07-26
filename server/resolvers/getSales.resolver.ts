@@ -27,8 +27,6 @@ export const root = {
           .innerJoin(products, eq(sales.productId, products.id))
           .innerJoin(customers, eq(sales.customerId, customers.id));
 
-        console.log("Fetched Details:", fetchAllDetails);
-
         if (!fetchAllDetails || fetchAllDetails.length === 0) {
           throw new Error("No sales data found");
         }
